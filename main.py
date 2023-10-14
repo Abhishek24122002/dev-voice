@@ -6,6 +6,7 @@ from config import apikey
 import datetime
 import random
 import numpy as np
+import pyttsx3
 
 
 chatStr = ""
@@ -57,8 +58,11 @@ def ai(prompt):
 
 
 def say(text):
-    os.system(f'say "{text}"')
-
+    # Use PowerShell to convert text to speech
+    # os.system(f'PowerShell -Command "Add-Type -AssemblyName System.Speech; (New-Object System.Speech.Synthesis.SpeechSynthesizer).Speak(\'{text}\')"')
+    engine = pyttsx3.init()
+    engine.say(text)
+    engine.runAndWait()
 
 def takeCommand():
     r = sr.Recognizer()
@@ -75,6 +79,7 @@ def takeCommand():
 
 
 def open_cmd(app_name):
+    say("Opening CMD")
     # Create a path for the new directory by joining the location and app_name
     directory_path = os.path.join("D:\Major Project", app_name)
 
@@ -83,17 +88,18 @@ def open_cmd(app_name):
 
     # # Change the working directory to the newly created directory
     os.chdir(directory_path)
-
+    say('Creating React App ')
     # Open a command prompt and run the 'npx create-react-app' command
     os.system(f'start cmd /K "npx create-react-app {app_name}"')
     
 
 
 if __name__ == '__main__':
-    print('Welcome to Jarvis A.I')
-    say("Jarvis A.I")
+    print('Welcome to Dev Voice AI')
+    say("Dev Voice AI")
     while True:
         print("Listening...")
+        say('Listening')
         query = takeCommand()
         # todo: Add more sites
         sites = [["youtube", "https://www.youtube.com"], ["website",
@@ -108,9 +114,9 @@ if __name__ == '__main__':
             os.system(f"open {musicPath}")
 
         elif "the time" in query:
-            musicPath = "/Users/harry/Downloads/downfall-21371.mp3"
             hour = datetime.datetime.now().strftime("%H")
             min = datetime.datetime.now().strftime("%M")
+            print(f"Sir time is {hour} bajke {min} minutes")
             say(f"Sir time is {hour} bajke {min} minutes")
 
         elif "open facetime".lower() in query.lower():
@@ -129,11 +135,13 @@ if __name__ == '__main__':
             chatStr = ""
 
         elif "create react app" in query.lower():
-        # Extract the app name from the user's input
             app_name = query.lower().replace("create react app", "").strip()
             open_cmd(app_name)
+        elif "dev" in query.lower():
+            say('at your service sir')
         else:
             print("Chatting...")
+            say('AI turning off')
             chat(query)
 
         # say(query)
