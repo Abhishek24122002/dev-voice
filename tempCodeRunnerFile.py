@@ -1,1 +1,1 @@
-say("Opening CMD")
+from dotenv import load_dotenv

@@ -38,10 +38,10 @@ def ai(prompt):
     text = f"OpenAI response for Prompt: {prompt} \n *************************\n\n"
 
     response = openai.Completion.create(
-        model="text-davinci-003",
+        model="text-davinci-002",
         prompt=prompt,
         temperature=0.7,
-        max_tokens=256,
+        max_tokens=100,
         top_p=1,
         frequency_penalty=0,
         presence_penalty=0
@@ -68,6 +68,18 @@ def takeCommand():
     r = sr.Recognizer()
     with sr.Microphone() as source:
         # r.pause_threshold =  0.6
+        audio = r.listen(source)
+        try:
+            print("Recognizing...")
+            query = r.recognize_google(audio, language="en-in")
+            print(f"User said: {query}")
+            return query
+        except Exception as e:
+            return "Some Error Occurred. Sorry from Jarvis"
+
+def takeCommand():
+    r = sr.Recognizer()
+    with sr.Microphone() as source:
         audio = r.listen(source)
         try:
             print("Recognizing...")
@@ -125,7 +137,7 @@ if __name__ == '__main__':
         elif "open pass".lower() in query.lower():
             os.system(f"open /Applications/Passky.app")
 
-        elif "Using artificial intelligence".lower() in query.lower():
+        elif "testing".lower() in query.lower():
             ai(prompt=query)
 
         elif "Jarvis Quit".lower() in query.lower():
@@ -139,6 +151,13 @@ if __name__ == '__main__':
             open_cmd(app_name)
         elif "dev" in query.lower():
             say('at your service sir')
+
+        elif "answer a question" in query.lower():
+            # Prompt the user for a question
+            say("Sure, please ask your question.")
+            question = takeCommand()
+            ai(prompt=question)
+
         else:
             print("Chatting...")
             say('AI turning off')

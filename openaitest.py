@@ -3,18 +3,33 @@ import openai
 from config import apikey
 
 openai.api_key = apikey
+completion = openai.Completion()
 
-response = openai.Completion.create(
-  model="text-davinci-003",
-  prompt="Write an email to my boss for resignation?",
-  temperature=0.7,
-  max_tokens=256,
-  top_p=1,
-  frequency_penalty=0,
-  presence_penalty=0
-)
+def QuestionsAnswer(question,chat_log = None):
+    FileLog = open("qna_log.txt","r")
+    chat_log_template = FileLog.read()
+    FileLog.close()
+    if chat_log is None:
+        chat_log = chat_log_template
 
-print(response)
+    prompt = f'{chat_log}Question : {question}\nAnswer : '
+    response = completion.create(
+        model = "text-davinci-002",
+        prompt=prompt,
+        temperature = 0,
+        max_tokens = 100,
+        top_p = 1,
+        frequency_penalty = 0,
+        presence_penalty = 0)
+    answer = response.choices[0].text.strip()
+    chat_log_template_update = chat_log_template + f"\nQuestion : {question} \nAnswer : {answer}"
+    FileLog = open("qna_log.txt","w")
+    FileLog.write(chat_log_template_update)
+    FileLog.close()
+    return answer
+
+print(QuestionsAnswer("What is web Development?"))
+
 '''
 {
   "choices": [
