@@ -3,7 +3,8 @@ import subprocess
 
 def execute_command(command):
     if "assistant" in command:
-        subprocess.run(["python", "main.py"])
+        subprocess.run(["python", "D:\\Downloads\\JarvisAI-YouTube-main\\JarvisAI-YouTube-main\\main.py"])
+
     elif "exit" in command:
         exit()
 
