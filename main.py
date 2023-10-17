@@ -77,6 +77,10 @@ def takeCommand():
         except Exception as e:
             return "Some Error Occurred. Sorry from Jarvis"
 
+def open_vs_code():
+    say("Opening vs code")
+    os.system(f'start cmd /K "code . "')
+
 def takeCommand():
     r = sr.Recognizer()
     with sr.Microphone() as source:
@@ -104,6 +108,7 @@ def open_cmd(app_name):
     # Open a command prompt and run the 'npx create-react-app' command
     os.system(f'start cmd /K "npx create-react-app {app_name}"')
     
+    
 
 
 if __name__ == '__main__':
@@ -124,6 +129,7 @@ if __name__ == '__main__':
         if "open music" in query:
             musicPath = "/Users/harry/Downloads/downfall-21371.mp3"
             os.system(f"open {musicPath}")
+        
 
         elif "the time" in query:
             hour = datetime.datetime.now().strftime("%H")
@@ -131,11 +137,15 @@ if __name__ == '__main__':
             print(f"Sir time is {hour} bajke {min} minutes")
             say(f"Sir time is {hour} bajke {min} minutes")
 
-        elif "open facetime".lower() in query.lower():
-            os.system(f"open /System/Applications/FaceTime.app")
+        elif "open vs code".lower() in query.lower():
+         os.system(f"open /Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin/code")
+         
 
         elif "open pass".lower() in query.lower():
             os.system(f"open /Applications/Passky.app")
+
+        elif "vs code" in query.lower():
+            open_vs_code()
 
         elif "testing".lower() in query.lower():
             ai(prompt=query)
